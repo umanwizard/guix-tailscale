@@ -11,7 +11,9 @@
   #:use-module (guix git-download)
   #:use-module (gnu packages certs)
   #:use-module (gnu packages compression)
-  #:use-module (gnu packages base))
+  #:use-module (gnu packages base)
+  #:use-module (gnu)
+  #:use-module (gnu services shepherd))
 
 (define-record-type* <go-git-reference>
   go-git-reference make-go-git-reference
@@ -148,3 +150,24 @@
                   (install-file "src/tailscale.com/tailscaled" (string-append #$output "/bin"))))))))
       (synopsis "Tailscale daemon")
       (description "Tailscale daemon"))))
+
+(define-public (tailscale-configuration) '())
+
+(define (tailscale-shepherd-service config)
+  (list (shepherd-service
+         (documentation "Run the tailscale daemon")
+         (provision '(tailscaled tailscale))
+         (requirement '(user-processes))
+         (actions '())
+         (start
+          #~(lambda _
+              (fork+exec-command (list #$(file-append tailscaled "/bin/tailscaled")))))
+         (stop #~(make-kill-destructor)))))
+
+(define-public tailscale-service-type
+  (service-type
+   (name 'tailscale)
+   (extensions
+    (list (service-extension shepherd-root-service-type tailscale-shepherd-service)))
+   (default-value (tailscale-configuration))
+   (description "Run and connect to tailscale")))
