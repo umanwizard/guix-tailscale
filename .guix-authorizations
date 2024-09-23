@@ -1,0 +1,6 @@
+;; -*- mode: scheme; -*-
+
+(authorizations
+ (version 0)
+ (("9E53FC33B8328C745E7B31F70226C10D7877B741"
+   (name "brennan"))))
