@@ -40,4 +40,6 @@ For example, if you also use `nonguix`, the full contents of your `~/.config/gui
 
 After making the change to your channels list, run `guix pull`.
 
-To run tailscale on boot, add `(service tailscale-service-type)` to your `services` list in your Guix SD OS configuration. If you use Guix on some other distribution, use `guix install` to get `tailscaled` and `tailscale`, and arrange for `tailscaled` to run on boot, however that is normally done in your distribution
+To run tailscale on boot, add `(service tailscale-service-type)` to your `services` list in your Guix SD OS configuration. If you use Guix on some other distribution, use `guix install` to get `tailscaled` and `tailscale`, and arrange for `tailscaled` to run on boot, however that is normally done in your distribution.
+
+Everything is in the module `(btv tailscale)`.
