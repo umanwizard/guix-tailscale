@@ -13,14 +13,26 @@
   #:use-module (gnu packages compression)
   #:use-module (gnu packages base)
   #:use-module (gnu)
-  #:use-module (gnu services shepherd))
+  #:use-module (gnu services shepherd)
+  #:export (go-fetch-vendored
+            go-git-reference
+            go-git-reference?
+            go-git-reference-url
+            go-git-reference-commit
+            go-git-reference-sha256
+            go-git-reference-go
+            go-url-reference
+            go-url-reference?
+            go-url-reference-url
+            go-url-reference-sha))
 
 (define-record-type* <go-git-reference>
   go-git-reference make-go-git-reference
   go-git-reference?
   (url    go-git-reference-url)
   (commit go-git-reference-commit)
-  (sha    go-git-reference-sha256))
+  (sha    go-git-reference-sha256)
+  (go     go-git-reference-go (default go-1.23)))
 
 (define-record-type* <go-url-reference>
   go-url-reference make-go-url-reference
@@ -41,8 +53,11 @@
            (($ <go-url-reference> url commit sha)
             (origin
               (method url-fetch)
-              (uri url)              
+              (uri url)
               (sha256 sha)))))
+        (go (match uri
+              (($ <go-git-reference> url commit sha go) go)
+              (_ go-1.23)))
         (name (or name "go-git-checkout")))
     (gexp->derivation
      (string-append name "-vendored.tar.gz")
@@ -50,7 +65,7 @@
        #~(begin
            (use-modules (guix build utils))
            (let ((inputs (list
-                          #+go-1.23
+                          #+go
                           #+tar
                           #+bzip2
                           #+gzip)))
