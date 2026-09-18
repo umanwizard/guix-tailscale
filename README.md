@@ -1,5 +1,7 @@
 Guix packages and services for tailscale.
 
+**NOTE: The channel introduction was changed due to some commits accidentally not being signed. If you are having issues, make sure the channel introduction is correct.**
+
 To get this channel, add this to your channels list:
 
 ``` scheme
@@ -9,7 +11,7 @@ To get this channel, add this to your channels list:
  (branch "main")
  (introduction
  (make-channel-introduction
-  "c72e15e84c4a9d199303aa40a81a95939db0cfee"
+  "52e82318f282c555757ef077d93a685fda97565d"
   (openpgp-fingerprint
    "9E53FC33B8328C745E7B31F70226C10D7877B741"))))
 ```
@@ -23,7 +25,7 @@ For example, if you also use `nonguix`, the full contents of your `~/.config/gui
         (branch "main")
         (introduction
          (make-channel-introduction
-          "c72e15e84c4a9d199303aa40a81a95939db0cfee"
+          "52e82318f282c555757ef077d93a685fda97565d"
           (openpgp-fingerprint
            "9E53FC33B8328C745E7B31F70226C10D7877B741"))))
        (channel
